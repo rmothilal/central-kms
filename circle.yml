@@ -1,0 +1,39 @@
+general:
+  branches:
+    ignore:
+      - master
+
+machine:
+  pre:
+    - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
+  services:
+    - docker
+  node:
+    version: 6.5.0
+  environment:
+    AWS_ACCOUNT_ID: 886403637725
+    APP_NAME: central-kms
+    AWS_REGION: us-west-2
+    BUCKET: elasticbeanstalk-$AWS_REGION-$AWS_ACCOUNT_ID
+
+dependencies:
+  cache_directories:
+    - "~/.ivy2"
+    - "~/.sbt"
+
+test:
+  override:
+    - sbt coverage test coverageReport
+  post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - mv target/test-reports/* $CIRCLE_TEST_REPORTS/junit/
+    - mv target/scala-2.12/scoverage-report $CIRCLE_ARTIFACTS/scoverage-report
+    - mv target/scala-2.12/coverage-report $CIRCLE_ARTIFACTS/coverage-report
+
+deployment:
+  dev:
+    tag: /v[0-9]+(\.[0-9]+)*/
+    commands:
+      - sbt docker:publishLocal
+      - node deploy/node/index.js
+      - aws s3 cp $CIRCLE_ARTIFACTS/scoverage-report/scoverage.xml s3://$BUCKET/sonar/$APP_NAME/scoverage.xml

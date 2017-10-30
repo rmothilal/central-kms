@@ -1,0 +1,28 @@
+{
+  "name": "central-kms",
+  "version": "0.7.9",
+  "private": true,
+  "description": "Central Key Management Store",
+  "scripts": {
+    "test": "sbt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mojaloop/central-kms.git"
+  },
+  "keywords": [
+    "key",
+    "management",
+    "store"
+  ],
+  "author": "Dwolla",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/mojaloop/central-kms/issues"
+  },
+  "homepage": "https://github.com/mojaloop/central-kms#readme",
+  "devDependencies": {
+    "aws-sdk": "2.45.0",
+    "bluebird": "3.5.0"
+  }
+}
