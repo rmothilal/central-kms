@@ -1,0 +1,49 @@
+---
+ apiVersion: extensions/v1beta1
+ kind: Deployment
+ metadata:
+    name: central-kms-deployment
+    labels:
+      app: central-kms
+ spec:
+    replicas: 1
+    template:
+      metadata:
+        labels:
+          app: central-kms
+      spec:
+        containers:
+          - name: central-kms
+            image: mojaloop/central-kms:latest
+            ports:
+              - containerPort: 8080
+            # livenessProbe:
+            #   httpGet:
+            #     path: /health
+            #     port: 8080
+            #     httpHeaders:
+            #     - name: X-Custom-Header
+            #      value: Awesome
+            #   initialDelaySeconds: 30
+            #   periodSeconds: 3
+            env:
+              - name: DB_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: central-kms-secret
+                    key: db.username
+              - name: DB_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: central-kms-secret
+                    key: db.password
+              - name: DB_HOST
+                valueFrom:
+                  configMapKeyRef:
+                    name: central-kms-config
+                    key: db.host
+              - name: DB_PORT
+                valueFrom:
+                  configMapKeyRef:
+                    name: central-kms-config
+                    key: db.port

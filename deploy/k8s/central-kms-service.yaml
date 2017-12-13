@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: central-kms
+  labels:
+    app: central-kms
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+      name: http-api-and-tcp-websocket
+      protocol: TCP
+  selector:
+    app: central-kms
