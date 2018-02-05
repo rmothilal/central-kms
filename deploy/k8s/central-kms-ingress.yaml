@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: central-kms
+  labels:
+      app: central-kms
+spec:
+  rules:
+    - host: central-kms.local
+      http:
+        paths:
+        - backend:
+            serviceName: central-kms
+            servicePort: 80

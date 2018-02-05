@@ -38,7 +38,7 @@ enablePlugins(DockerPlugin)
 enablePlugins(AshScriptPlugin)
 enablePlugins(GitVersioning)
 
-packageName in Docker := "leveloneproject/central-kms"
+packageName in Docker := "mojaloop/central-kms"
 dockerBaseImage := "openjdk:8-jdk-alpine"
 dockerExposedPorts := Seq(8080)
 dockerUpdateLatest := true
